@@ -1,3 +1,6 @@
+require('dotenv').config();
+const { API_URL } = process.env;
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -26,7 +29,14 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
+    '@nuxtjs/composition-api/module',
+    '@nuxt/postcss8',
   ],
+
+  generate: {
+    // choose to suit your project
+    interval: 2000,
+  },
 
   watchers: {
     webpack: {
@@ -37,6 +47,23 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxt/http', '@nuxtjs/proxy', '@nuxtjs/dotenv'],
 
+  env: {
+    API_URL,
+  },
+
+  proxy: {
+    '/api': process.env.API_URL,
+  },
+
+  http: {
+    baseURL: process.env.API_URL,
+    browserBaseURL: process.env.API_URL,
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  storybook: {
+    port: 6006,
+  },
 };

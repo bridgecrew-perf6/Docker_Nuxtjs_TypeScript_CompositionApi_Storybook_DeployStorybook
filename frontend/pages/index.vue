@@ -1,24 +1,28 @@
 <template>
-  <div class="container">
-    <p>ボタンをホバーすると透過されます</p>
-    <button class="button">ボタン</button>
+  <div>
+    <p>
+      {{ users }}
+    </p>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.container {
-  margin: 24px;
-}
+<script lang="ts">
+import { defineComponent, ref, useContext, useFetch } from '@nuxtjs/composition-api';
 
-.button {
-  padding: 8px 16px;
-  color: #fff;
-  background-color: red;
-  border: none;
+export default defineComponent({
+  setup() {
+    const { $http } = useContext();
 
-  &:hover {
-    opacity: 0.7;
-    cursor: pointer;
-  }
-}
-</style>
+    // data
+    const users = ref({});
+
+    useFetch(async () => {
+      users.value = await $http.$get('/');
+    });
+
+    return {
+      users,
+    };
+  },
+});
+</script>
